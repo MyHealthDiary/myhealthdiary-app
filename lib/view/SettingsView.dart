@@ -28,6 +28,10 @@ class _SettingsViewState extends State<SettingsView> {
   final date = TextEditingController();
   final gender = TextEditingController();
   final diabetestype = TextEditingController();
+  final pressuremax = TextEditingController();
+  final pressuremin = TextEditingController();
+  final glucosemax = TextEditingController();
+  final glucosemin = TextEditingController();
 
   @override
   void initState() {}
@@ -41,7 +45,7 @@ class _SettingsViewState extends State<SettingsView> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 80),
+                  SizedBox(height: 20),
                   Form(
                       child: Column(children: <Widget>[
                     SizedBox(height: 30),
@@ -80,33 +84,35 @@ class _SettingsViewState extends State<SettingsView> {
                     SizedBox(
                       height: 10,
                     ),
-                        Row(
-                          children: [
-                            Text("Last Name: ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                )),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            new Flexible(
-                                child: new Container(
-                                  child: new TextFormField(
-                                    controller: lastname,
-                                    style: TextStyle(
-                                        color: Color(0xff444444), fontSize: 16),
-                                    decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 8, horizontal: 7)),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xff8fb3ef),
-                                      borderRadius: BorderRadius.circular(12)),
-                                )),
-                          ],
+                    Row(
+                      children: [
+                        Text("Last Name: ",
+                            style: TextStyle(
+                              fontSize: 18,
+                            )),
+                        SizedBox(
+                          width: 10,
                         ),
-                    SizedBox(height: 10,),
+                        new Flexible(
+                            child: new Container(
+                          child: new TextFormField(
+                            controller: lastname,
+                            style: TextStyle(
+                                color: Color(0xff444444), fontSize: 16),
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 7)),
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xff8fb3ef),
+                              borderRadius: BorderRadius.circular(12)),
+                        )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       children: [
                         Text("Birthdate: ",
@@ -131,8 +137,7 @@ class _SettingsViewState extends State<SettingsView> {
                           ),
                           decoration: BoxDecoration(
                               color: Color(0xff8fb3ef),
-                              borderRadius: BorderRadius.circular(12)
-                          ),
+                              borderRadius: BorderRadius.circular(12)),
                         )),
                       ],
                     ),
@@ -267,7 +272,123 @@ class _SettingsViewState extends State<SettingsView> {
                       ],
                     ),
                     SizedBox(
-                      height: 50,
+                      height: 10,
+                    ),
+                    Text(
+                        "Add the expected blood glucose and bloos pressure ranges, you will be notified if the inserted value exceed these ranges.",
+                        style: TextStyle(fontStyle: FontStyle.italic)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text("Blood Glucose Range: ",
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        new Flexible(
+                            child: new Container(
+                          child: new TextFormField(
+                            controller: glucosemax,
+                            style: TextStyle(
+                                color: Color(0xff444444), fontSize: 16),
+                            decoration: InputDecoration(
+                                hintText: "max",
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 7)),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xff8fb3ef),
+                              borderRadius: BorderRadius.circular(12)),
+                        )),
+                        Text(" - "),
+                        new Flexible(
+                            child: new Container(
+                          child: new TextFormField(
+                            controller: glucosemin,
+                            style: TextStyle(
+                                color: Color(0xff444444), fontSize: 16),
+                            decoration: InputDecoration(
+                                hintText: "min",
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 7)),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xff8fb3ef),
+                              borderRadius: BorderRadius.circular(12)),
+                        )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text("Blood Pressure Range: ",
+                            style: TextStyle(
+                              fontSize: 15,
+                            )),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        new Flexible(
+                            child: new Container(
+                          child: new TextFormField(
+                            controller: pressuremax,
+                            style: TextStyle(
+                                color: Color(0xff444444), fontSize: 16),
+                            decoration: InputDecoration(
+                                hintText: "max",
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 7)),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xff8fb3ef),
+                              borderRadius: BorderRadius.circular(12)),
+                        )),
+                        Text(" - "),
+                        new Flexible(
+                            child: new Container(
+                          child: new TextFormField(
+                            controller: pressuremin,
+                            style: TextStyle(
+                                color: Color(0xff444444), fontSize: 16),
+                            decoration: InputDecoration(
+                                hintText: "min",
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 7)),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xff8fb3ef),
+                              borderRadius: BorderRadius.circular(12)),
+                        )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     FormUtils.getButton('Save', () async {
                       String fname = firstname.text;
@@ -279,7 +400,10 @@ class _SettingsViewState extends State<SettingsView> {
                       String birthdate = date.text;
                       String vargender = gender.text;
                       String diabettype = diabetestype.text;
-
+                      String glucosRangemax = glucosemax.text;
+                      String glucoserRangemin = glucosemin.text;
+                      String pressureRangemax = pressuremax.text;
+                      String pressureRangemin = pressuremin.text;
 
                       createUser newUser = new createUser(
                           email,
@@ -290,7 +414,11 @@ class _SettingsViewState extends State<SettingsView> {
                           vargender,
                           varheight,
                           varweight,
-                          diabettype);
+                          diabettype,
+                          glucosRangemax,
+                          glucoserRangemin,
+                          pressureRangemax,
+                          pressureRangemin);
                       bool status =
                           await widget.wsinterface.createAccount(newUser);
                       if (status) {
@@ -301,7 +429,8 @@ class _SettingsViewState extends State<SettingsView> {
                         Navigator.pushNamed(context, 'dashboard');
                       } else {
                         Fluttertoast.showToast(
-                            msg: "Error: check the inserted data and try again!",
+                            msg:
+                                "Error: check the inserted data and try again!",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM);
                       }

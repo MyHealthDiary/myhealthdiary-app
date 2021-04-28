@@ -59,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
       displaycarbs = displayData.carbohydrates.toString();
       displaysteps = displayData.steps.toString();
       displaysleep = displayData.sleep.toString();
-    }
+      }
     dBMI = await widget.wsinterface.displayBMI();
     if(dBMI != null){
       displayBMI = dBMI;
@@ -73,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
         drawer: MenuWidget(widget.wsinterface),
         backgroundColor: Color(0xfff5f5f5),
         resizeToAvoidBottomPadding: false,
-        body: Padding(
+        body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

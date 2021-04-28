@@ -24,7 +24,7 @@ import 'view/EmailRecover.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final wsInterface wsinterface = wsInterface();
-  final String localhost = 'http://172.19.193.250:8080';
+  final String localhost = 'http://myhealthdiaryserver-env.eba-ateqfain.us-east-1.elasticbeanstalk.com/';
   String email = "";
   String password = "";
   var userwebservices = UserWebServices(localhost);

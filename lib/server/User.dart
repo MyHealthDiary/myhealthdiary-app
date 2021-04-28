@@ -9,7 +9,11 @@ class User {
   final String height;
   final String weight;
   final String diabet_type;
+  final String glucoseRangeMax;
+  final String glucoseRangeMin;
+  final String pressureRangeMax;
+  final String pressureRangeMin;
 
-  User(this.email, this.password, this.firstname, this.lastname, this.birthdate, this.gender, this.height, this.weight, this.diabet_type);
+  User(this.email, this.password, this.firstname, this.lastname, this.birthdate, this.gender, this.height, this.weight, this.diabet_type, this.glucoseRangeMax, this.glucoseRangeMin, this.pressureRangeMax, this.pressureRangeMin);
 
 }

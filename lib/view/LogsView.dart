@@ -33,6 +33,9 @@ class _LogsViewState extends State<LogsView> {
   final pressureControllerMin = TextEditingController();
   final notesController = TextEditingController();
   final quantityController = TextEditingController();
+  final stepsController = TextEditingController();
+  final heartRateController = TextEditingController();
+  final sleepController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +49,12 @@ class _LogsViewState extends State<LogsView> {
             date.year.toString()),
         drawer: MenuWidget(widget.wsinterface),
         backgroundColor: Color(0xfff5f5f5),
-        body: Padding(
+        body: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
+                SizedBox(height: 10),
                 Form(
                   child: Column(
                     children: <Widget>[
@@ -68,7 +71,7 @@ class _LogsViewState extends State<LogsView> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 10,
                       ),
                       Row(
                         children: [
@@ -219,6 +222,117 @@ class _LogsViewState extends State<LogsView> {
                       SizedBox(
                         height: 10,
                       ),
+                      Row(
+                        children: [
+                          Image.asset(
+                            "images/moon.png",
+                            width: 40,
+                            height: 30,
+                          ),
+                          Text("Sleep"),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          new Flexible(
+                              child: new Container(
+                                child: new TextFormField(
+                                  controller: sleepController,
+                                  style: TextStyle(
+                                      color: Color(0xff444444), fontSize: 16),
+                                  decoration: InputDecoration(
+                                      hintText: "How much did you sleep?",
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 7)),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xff8fb3ef),
+                                    borderRadius: BorderRadius.circular(12)),
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("h"),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Image.asset(
+                            "images/steps.png",
+                            width: 40,
+                            height: 30,
+                          ),
+                          Text("Steps"),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          new Flexible(
+                              child: new Container(
+                                child: new TextFormField(
+                                  controller: stepsController,
+                                  style: TextStyle(
+                                      color: Color(0xff444444), fontSize: 16),
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 7)),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xff8fb3ef),
+                                    borderRadius: BorderRadius.circular(12)),
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Image.asset(
+                            "images/hr.png",
+                            width: 40,
+                            height: 30,
+                          ),
+                          Text("Heart Rate"),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          new Flexible(
+                              child: new Container(
+                                child: new TextFormField(
+                                  controller: heartRateController,
+                                  style: TextStyle(
+                                      color: Color(0xff444444), fontSize: 16),
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8, horizontal: 7)),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xff8fb3ef),
+                                    borderRadius: BorderRadius.circular(12)),
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text("bpm"),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
                       Row(
                         children: [
                           Image.asset(
@@ -475,7 +589,7 @@ class _LogsViewState extends State<LogsView> {
                                 }),
                           )),
                       SizedBox(
-                        height: 50,
+                        height: 20,
                       ),
                       FormUtils.getButton('Add Log +', () async {
                         var textBloodController = bloodController.text;
@@ -487,15 +601,19 @@ class _LogsViewState extends State<LogsView> {
                             pressureControllerMax.text;
                         final textPressureControllerMin =
                             pressureControllerMin.text;
+                        final textStepsController = stepsController.text;
+                        final textHeartRateController = heartRateController.text;
+                        final textSleepController = sleepController.text;
+
                         HealthData data = new HealthData(
                             textBloodController,
                             textA1cController,
-                            '0',
+                            textHeartRateController,
                             textPressureControllerMax,
                             textPressureControllerMin,
                             '0',
-                            '0',
-                            '0',
+                            textStepsController,
+                            textSleepController,
                             textExerciseController);
                         bool status = await widget.wsinterface.addLog(data);
                         if (status) {
@@ -503,6 +621,8 @@ class _LogsViewState extends State<LogsView> {
                               msg: "Log correctly added",
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM);
+                          widget.wsinterface.checkLatestData(textBloodController, textPressureControllerMax, textPressureControllerMin);
+
                           Navigator.pushNamed(context, 'dashboard');
                         } else {
                           Fluttertoast.showToast(

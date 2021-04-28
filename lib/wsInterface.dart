@@ -29,7 +29,7 @@ class wsInterface {
     await sessionManager.init();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     NotificationAppLaunchDetails notificationAppLaunchDetails =
-        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
     await initNotifications(flutterLocalNotificationsPlugin);
     initNotifications(flutterLocalNotificationsPlugin);
     try {
@@ -115,7 +115,7 @@ class wsInterface {
         data.steps);
 
     bool success =
-        await healthDataWebServices.addHealthData(data, loginData.email);
+    await healthDataWebServices.addHealthData(data, loginData.email);
     if (success) {
       return true;
     } else {
@@ -133,14 +133,14 @@ class wsInterface {
     String email = logindata.email;
     User user = await userWebServices.findUserByEmail(email);
     if (user != null) {
-    double height = double.parse(user.height);
-    double weight =  double.parse(user.weight);
+      double height = double.parse(user.height);
+      double weight = double.parse(user.weight);
 
-    double cmHeight = (height / 100);
-    double BMI = (weight / (cmHeight * cmHeight));
-    String bmiString = BMI.toStringAsFixed(2);
+      double cmHeight = (height / 100);
+      double BMI = (weight / (cmHeight * cmHeight));
+      String bmiString = BMI.toStringAsFixed(2);
 
-      return  bmiString;
+      return bmiString;
     } else {
       return null;
     }
@@ -151,7 +151,7 @@ class wsInterface {
     print(logindata.email);
     String email = logindata.email;
     HealthData returnData =
-        await healthDataWebServices.findHealthDataByUser(email);
+    await healthDataWebServices.findHealthDataByUser(email);
     if (returnData != null) {
       return returnData;
     } else {
@@ -164,7 +164,7 @@ class wsInterface {
     print(logindata.email);
     String email = logindata.email;
     List<int> returnList =
-        await healthDataWebServices.findGlucoseDataChart(email);
+    await healthDataWebServices.findGlucoseDataChart(email);
     if (returnList != null) {
       return returnList;
     } else {
@@ -173,16 +173,16 @@ class wsInterface {
   }
 
   final BehaviorSubject<ReminderNotification>
-      didReceiveLocalNotificationSubject =
-      BehaviorSubject<ReminderNotification>();
+  didReceiveLocalNotificationSubject =
+  BehaviorSubject<ReminderNotification>();
 
   final BehaviorSubject<String> selectNotificationSubject =
-      BehaviorSubject<String>();
+  BehaviorSubject<String>();
 
   Future<void> initNotifications(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+    AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOS = IOSInitializationSettings(
         requestAlertPermission: false,
         requestBadgePermission: false,
@@ -193,15 +193,15 @@ class wsInterface {
               id: id, title: title, body: body, payload: payload));
         });
     var initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: ' + payload);
-      }
-      selectNotificationSubject.add(payload);
-    });
+          if (payload != null) {
+            debugPrint('notification payload: ' + payload);
+          }
+          selectNotificationSubject.add(payload);
+        });
   }
 
   Future<void> scheduleNotification(
@@ -216,7 +216,7 @@ class wsInterface {
       icon: '@mipmap/ic_launcher',
     );
     var platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+    NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
         0, 'Healthy Reminder', body, datetime, platformChannelSpecifics);
   }
@@ -354,15 +354,39 @@ class wsInterface {
           }
         } else if (csvType == "deepSleepTime") {
           HealthData data = new HealthData(
-              "0", "0", "0", "0", "0", "0", "0", row[2].toString(), "0");
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              row[2].toString(),
+              "0");
           await addLog(data);
         } else if (csvType == "heartRate") {
           HealthData data = new HealthData(
-              "0", "0", row[2].toString(), "0", "0", "0", "0", "0", "0");
+              "0",
+              "0",
+              row[2].toString(),
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0");
           await addLog(data);
         } else if (csvType == "steps") {
           HealthData data = new HealthData(
-              "0", "0", "0", "0", "0", "0", row[2].toString(), "0", "0");
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              row[2].toString(),
+              "0",
+              "0");
           await addLog(data);
         } else {
           return false;
@@ -381,6 +405,59 @@ class wsInterface {
       final input = new File(file.path).openRead();
       bool csv = await readCSV(input);
       return csv;
+    }
+  }
+
+  void checkLatestData(String blood_glucose, String bloodpressure_max,
+      String bloodpressure_min) async {
+    LoginData loginData = await sessionManager.getLoggedUser();
+    User user = await findUserByEmail(loginData.email);
+    int glucoseRangeMax = int.parse(user.glucoseRangeMax);
+    int glucoseRangeMin = int.parse(user.glucoseRangeMin);
+    int pressureRangeMax = int.parse(user.pressureRangeMax);
+    int pressureRangeMin = int.parse(user.pressureRangeMin);
+    try {
+      if (blood_glucose.isNotEmpty) {
+        double bloodglucose = double.parse(blood_glucose);
+        if (bloodglucose > glucoseRangeMax) {
+          await scheduleNotification(
+              flutterLocalNotificationsPlugin,
+              "0",
+              "ALERT: Blood Glucose exceeded your range! Take care!",
+              DateTime.now());
+        } else if (bloodglucose < glucoseRangeMin) {
+          await scheduleNotification(
+              flutterLocalNotificationsPlugin,
+              "0",
+              "ALERT: Blood Glucose is under your expected range range! Take care!",
+              DateTime.now());
+        }
+      }
+
+      if (bloodpressure_max.isNotEmpty) {
+        int pressuremax = int.parse(bloodpressure_max);
+
+        if (pressuremax > pressureRangeMax) {
+          await scheduleNotification(
+              flutterLocalNotificationsPlugin,
+              "0",
+              "ALERT: Blood Pressure exceeded your range! Take care!",
+              DateTime.now());
+        }
+      }
+
+      if (bloodpressure_min.isNotEmpty) {
+        int pressuremin = int.parse(bloodpressure_min);
+        if (pressuremin < pressureRangeMin) {
+          await scheduleNotification(
+              flutterLocalNotificationsPlugin,
+              "0",
+              "ALERT: Blood Pressure is under your expected range! Take care!",
+              DateTime.now());
+        }
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

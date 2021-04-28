@@ -29,10 +29,14 @@ class UserWebServices {
       int userHeight = jsonObj['height'];
       double userWeight = jsonObj['weight'];
       String userDiabetType = jsonObj['diabet_type'];
+      int glucoseMax = jsonObj['glucoseRangeMax'];
+      int glucoseMin = jsonObj['glucoseRangeMin'];
+      int pressureMax = jsonObj['pressureRangeMax'];
+      int pressureMin = jsonObj['pressureRangeMin'];
       print(userEmail.toLowerCase());
       if (userEmail != null) {
         return User(userEmail, userPassword, userFirstName, userLastName,
-            userBirthDate, userGender, userHeight.toString(), userWeight.toString(), userDiabetType);
+            userBirthDate, userGender, userHeight.toString(), userWeight.toString(), userDiabetType, glucoseMax.toString(), glucoseMin.toString(), pressureMax.toString(), pressureMin.toString());
       } else
         return null;
     } catch (e) {
@@ -58,8 +62,12 @@ class UserWebServices {
       int userHeight = jsonObj['height'];
       double userWeight = jsonObj['weight'];
       String userDiabetType = jsonObj['diabet_type'];
+      int glucoseMax = jsonObj['glucoseRangeMax'];
+      int glucoseMin = jsonObj['glucoseRangeMin'];
+      int pressureMax = jsonObj['pressureRangeMax'];
+      int pressureMin = jsonObj['pressureRangeMin'];
       return User(userEmail, userPassword, userFirstName, userLastName,
-          userBirthDate, userGender, userHeight.toString(), userWeight.toString(), userDiabetType);
+          userBirthDate, userGender, userHeight.toString(), userWeight.toString(), userDiabetType, glucoseMax.toString(), glucoseMin.toString(), pressureMax.toString(), pressureMin.toString());
     } catch (e) {
       return null;
     }
@@ -76,7 +84,11 @@ class UserWebServices {
         'gender': newUser.gender,
         'height': newUser.height,
         'weight': newUser.weight,
-        'diabet_type': newUser.diabet_type
+        'diabet_type': newUser.diabet_type,
+        'glucosemax' : newUser.glucoseRangeMax,
+        'glucosemin' : newUser.glucoseRangeMin,
+        'pressuremax' : newUser.pressureRangeMax,
+        'pressuremin' : newUser.pressureRangeMin,
       }).timeout(timeoutDuration, onTimeout: () => throw 'timeout');
       var jsonObj = jsonDecode(response.body);
       String userEmail = jsonObj['email'];
